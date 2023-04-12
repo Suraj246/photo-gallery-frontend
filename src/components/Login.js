@@ -37,7 +37,6 @@ function Login() {
                 },
                 // { withCredentials: true }
             );
-            console.log();
             if (data) {
                 if (data.errors) {
                     const { email, password } = data.errors;
@@ -85,6 +84,7 @@ function Login() {
                                     autoComplete="off"
                                     value={input.email}
                                     onChange={inputHandler}
+                                    aria-label="email"
                                 />
                             </div>
 
@@ -99,18 +99,19 @@ function Login() {
                                 autoComplete="off"
                                 value={input.password}
                                 onChange={inputHandler}
+                                aria-label="password"
                             />
                         </div>
                         <div className="login-forgetp">
                             <div>
-                                <input type="checkbox" name="" id="checkbox" />
-                                <span>Remeber me</span>
+                                <input type="checkbox" name="" id="checkbox" aria-label="remember" />
+                                <span>Remember me</span>
                             </div>
                             <div>
                                 <NavLink to="" className="a">Forget Password? </NavLink>
                             </div>
                         </div>
-                        <button type="submit" className="signup">Log In</button>
+                        <button type="submit" className="signup" aria-label="submit">Log In</button>
                         <div>
                             <span>Don't have an account ?</span>
                             <NavLink to="/signup" className="a"> Sign Up</NavLink>
