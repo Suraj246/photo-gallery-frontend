@@ -30,12 +30,13 @@ const Secrete = () => {
 
 
     const multipleDelete = async () => {
-        await axios.post(`${imgURL}/delete`, deleteItem)
-            .then((res) => {
-                console.log(res)
-            })
-            .then((err) => console.log(err))
-        setRefresh(!refresh)
+        try {
+            await axios.post(`${imgURL}/delete`, deleteItem)
+
+            setRefresh(!refresh)
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const toggleModal = () => {
@@ -98,16 +99,14 @@ const Secrete = () => {
                     }
                 }
             ).then((res) => {
-                console.log(res.data)
                 const { filename } = res.data
-                console.log(filename)
                 setUploadedFile(filename)
             })
             setImgUpload('')
             toggleModal()
         }
         catch (e) {
-            console.log(e)
+            alert(e)
         }
     }
 

@@ -49,7 +49,7 @@ function Register() {
                 }
             }
         } catch (ex) {
-            console.log(ex);
+            alert(ex)
         }
     };
     return (

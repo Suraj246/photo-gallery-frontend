@@ -49,7 +49,7 @@ function Login() {
                 }
             }
         } catch (ex) {
-            console.log(ex);
+            alert(ex)
         }
     };
 
