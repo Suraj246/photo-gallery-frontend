@@ -5,8 +5,8 @@ const Image = ({ uploadedFile, deleteItem, setDeleteItem, modal }) => {
     const [bigImage, setBigImage] = useState('')
     const [imageModal, setImageModal] = useState(false);
 
-    const imgURL = 'http://localhost:4000'
-    // const imgURL = 'https://photogallery-backend.onrender.com'
+    // const imgURL = 'http://localhost:4000'
+    const imgURL = 'https://photo-gallerly-backend.onrender.com'
 
     const toggleModal = () => {
         setImageModal(!imageModal);

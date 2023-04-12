@@ -6,8 +6,8 @@ import "./Model/Model.css";
 import Image from './Image'
 
 const Secrete = () => {
-    const imgURL = 'http://localhost:4000'
-    // const imgURL = 'https://photogallery-backend.onrender.com'
+    // const imgURL = 'http://localhost:4000'
+    const imgURL = 'https://photo-gallerly-backend.onrender.com'
 
 
     const navigate = useNavigate();
