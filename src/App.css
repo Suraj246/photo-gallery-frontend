@@ -170,33 +170,17 @@ label {
     font-size: 1rem;
 }
 
-input[type="file"] {
-    cursor: pointer;
-}
 
 .img-container {
-    border: 1px solid black;
-    padding: 3rem 0;
     display: flex;
     gap: 1rem;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-.btn-upload-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem 0;
-}
 
-.btn-upload {
-    border: none;
-    padding: .8rem 1rem;
-    background-color: rgba(99, 96, 171, 1);
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-}
+
 
 .image-container {
     display: flex;

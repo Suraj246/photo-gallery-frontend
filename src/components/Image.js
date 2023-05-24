@@ -1,40 +1,41 @@
 import React, { useState } from 'react'
 import FileDownload from 'js-file-download'
 import axios from 'axios'
+import Modal from 'react-bootstrap/Modal';
+
 const Image = ({ uploadedFile, deleteItem, setDeleteItem, modal }) => {
     const [bigImage, setBigImage] = useState('')
-    const [imageModal, setImageModal] = useState(false);
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     // const imgURL = 'http://localhost:4000'
     const imgURL = 'https://photo-gallerly-backend.onrender.com'
 
-    const toggleModal = () => {
-        setImageModal(!imageModal);
-    };
 
-    if (imageModal) {
-        document.body.classList.add('active-modal')
-    } else {
-        document.body.classList.remove('active-modal')
-    }
 
     const previewImage = (img) => {
         setBigImage(img)
-        toggleModal()
+        // setModalShow(true)
+        handleShow()
     }
+
     const downloadImage = (img) => {
         axios(`${imgURL}/api/getimage/${img}`, { method: 'GET', responseType: "blob" })
             .then((res) => {
                 FileDownload(res.data, `${img}.png`)
             })
     }
+
     return (
         <>
             <div className='image-container'>
 
                 {uploadedFile?.length === 0 &&
 
-                    <img src="\uploads\noImg.jpg" alt="" className='up-back' />
+                    <img src="\uploads\noImg.jpg" alt="" className='up-back' loading='lazy' />
                 }
                 {uploadedFile.map((elem, idx) => {
                     const dot = '.'
@@ -51,15 +52,12 @@ const Image = ({ uploadedFile, deleteItem, setDeleteItem, modal }) => {
                         <div key={idx} className={modal ? "image-upload ig" : "image-upload"}>
                             <div className="img-uploaded">
                                 <img src={`${imgURL}/uploads/${elem.profile}`} alt={title}
-
+                                    loading='lazy'
                                 />
-
-
                                 <i className='bx bx-show bx-sm bigImage' onClick={() => previewImage(elem.profile)} />
                                 <i className='bx bxs-cloud-download bx-sm downloadImg'
                                     onClick={() => downloadImage(elem.profile)}
                                 />
-
                             </div>
                             <div className="img-info">
                                 <span>{title}</span>
@@ -81,32 +79,20 @@ const Image = ({ uploadedFile, deleteItem, setDeleteItem, modal }) => {
                         </div>
                     )
                 })}
-                {modal ?
-                    null :
-                    <>
-                        {imageModal && (
-                            <div className="modal"
-                            >
-                                <div onClick={toggleModal} className="overlay"></div>
-                                <div className="modal-content"
-                                    style={{ width: '60vw', height: "70vh", padding: "0px", textAlign: "end" }}
-                                >
-                                    <button className="close-modal"
-                                        onClick={toggleModal}
-                                        style={{ border: "none", marginTop: "10px" }}
-                                    >
-                                        CLOSE
-                                    </button>
-                                    {!bigImage ? "loading" :
-                                        <img src={`${imgURL}/uploads/${bigImage}`} alt="img" loading='lazy'
-                                            style={{ width: '100%', height: '90%', objectFit: "contain" }}
-                                        />
-                                    }
-                                </div>
-                            </div>
-                        )}
-                    </>
-                }
+
+                <Modal show={show} onHide={handleClose}
+                    size="lg"
+                    centered
+                >
+                    <Modal.Body>
+                        {!bigImage ? "loading" :
+                            <img src={`${imgURL}/uploads/${bigImage}`} alt="img" loading='lazy'
+                                style={{ width: '100%', height: '90%', objectFit: "contain" }}
+                            />
+                        }
+                    </Modal.Body>
+                </Modal>
+
             </div>
         </>
     )

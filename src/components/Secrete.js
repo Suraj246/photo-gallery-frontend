@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import "./Model/Model.css";
 import Image from './Image'
+import Model from './Model';
+
 
 const Secrete = () => {
     // const imgURL = 'http://localhost:4000'
@@ -12,12 +13,13 @@ const Secrete = () => {
 
     const navigate = useNavigate();
     // const [user, setUser] = useState([])
-    const [modal, setModal] = useState(false);
     const [imgUpload, setImgUpload] = useState('')
     const [deleteItem, setDeleteItem] = useState([])
     const [uploadedFile, setUploadedFile] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [modalShow, setModalShow] = useState(false);
 
+    console.log(deleteItem.length)
     useEffect((e) => {
         const fetch = async () => {
             await axios.get(`${imgURL}/api/getimage`)
@@ -38,10 +40,6 @@ const Secrete = () => {
             alert(error)
         }
     }
-
-    const toggleModal = () => {
-        setModal(!modal);
-    };
 
     // following commented code is practice code nothing to do with main code
 
@@ -84,15 +82,15 @@ const Secrete = () => {
         }
     })
 
-    const upload = (e) => {
-        setImgUpload(e.target.files[0])
-    }
+
+
     const handlePhotoUpload = (e) => {
         const url = `${imgURL}/api/image`
         const formData = new FormData();
         formData.append('image', imgUpload)
         try {
             axios.post(url, formData,
+
                 {
                     header: {
                         'Content-Type': 'multipart/form-data'
@@ -103,7 +101,7 @@ const Secrete = () => {
                 setUploadedFile(filename)
             })
             setImgUpload('')
-            toggleModal()
+            setModalShow(false)
         }
         catch (e) {
             alert(e)
@@ -122,14 +120,14 @@ const Secrete = () => {
                     </div>
                     <div className="media-right">
                         <div className="deleteItems">
-                            {deleteItem.length > 0 ?
+                            {deleteItem.length === 0 ? null :
                                 <button onClick={multipleDelete} className="deleteButton">Delete Selected Photos</button>
-                                :
-                                null
                             }
                         </div>
                         <div>
-                            <button className="upload" onClick={toggleModal}>
+                            <button className="upload"
+                                onClick={() => setModalShow(true)}
+                            >
                                 <span>+</span>
                                 Upload new image
                             </button>
@@ -138,37 +136,17 @@ const Secrete = () => {
                     </div>
                 </div>
             </div>
-            {modal && (
-                <div className="modal">
-                    <div onClick={toggleModal} className="overlay"></div>
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <p className="modal-title">Upload new images</p>
-                            <span className="close-modal" onClick={toggleModal} >
-                                CLOSE
-                            </span>
-                        </div>
-                        <div>
-                            <div className="img-container">
-                                <div>
-                                    <img src={imgUpload === '' ? null : URL.createObjectURL(imgUpload)} alt="" width="100" height="100" />
-                                </div>
-                                <div>
-                                    <form encType="multipart/form-data" onSubmit={handlePhotoUpload}>
-                                        <input type="file" name="image" id="myfile" onChange={upload} />
-                                    </form>
-                                </div>
-                            </div>
-                            <div className="btn-upload-container">
-                                <button className="btn-upload" onClick={handlePhotoUpload}>Upload</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-            }
 
-            <Image uploadedFile={uploadedFile} deleteItem={deleteItem} setDeleteItem={setDeleteItem} modal={modal} />
+            <Model
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                handlePhotoUpload={handlePhotoUpload}
+                imgUpload={imgUpload}
+                setImgUpload={setImgUpload}
+            />
+
+
+            <Image uploadedFile={uploadedFile} deleteItem={deleteItem} setDeleteItem={setDeleteItem} modal={modalShow} />
         </>
     );
 }
